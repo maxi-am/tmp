@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# Тут будет автоматически генерироваться график жертв среди мирных жителей на Донбасе
+# In[159]:
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# In[160]:
+
+years=['2014','2015','2016','2017','2018','2019','2020','2021','2022']
+deaths=[2084,954,112,117,55,27,26,15,3193]
+dict_of_lists={'years':years,'deaths':deaths}
+
+deaths_data=pd.DataFrame(dict_of_lists)
+
+# In[161]:
+
+#print(deaths_data)
+
+# In[162]:
+
+#g= sns.catplot(x='years',y='deaths',data=deaths_data,kind='bar', hue=None, margin_titles=True)
+#g.fig.suptitle('Данные мониторинговой группы ООН')
+#g.set(xlabel='Годы конфликта',ylabel='Кол-во смертей мирных жителей')
+#sns.set_palette(['b','b','b','b','b','b','b','b','red'])
+#sns.set_style('whitegrid')
+#plt.xticks(rotation=90)
+#plt.show()
+
+# In[163]:
+
+y8_deaths=deaths_data['deaths'].sum()-deaths_data.iloc[8,-1]
+y8_deaths_str="Количество жертв 2014-2021: "+str(y8_deaths)
+#y8_deaths=deaths_data.iloc[8,-1]
+#print('Смертей за 8 лет: ' + deaths_data.iloc[1:-1])
+#print(y8_deaths)
+
+# In[164]:
+
+plt.style.use("bmh")
+fig,ax = plt.subplots()
+p1= ax.bar(deaths_data['years'], deaths_data['deaths'], color=['b','b','b','b','b','b','b','b','red'])
+ax.set_xticks(deaths_data['years'])
+ax.set_ylim(top=(deaths_data.iloc[8,-1]//500+1)*500)
+ax.set_xticklabels(deaths_data['years'], rotation=90)
+ax.set_ylabel("Кол-во смертей гражданских лиц")
+ax.set_title("Данные мониторинговой группы ООН")
+ax.bar_label(p1,fontsize=13,fontweight=700)
+ax.annotate("Количество смертей среди",             
+	xy=(3, 5),	xytext=(0.1, 2800),fontsize=13,fontweight=300) 
+ax.annotate("гражданских за 2014-2021: ",             
+	xy=(3, 5),	xytext=(0.1, 2600),fontsize=13,fontweight=300) 
+ax.annotate(str(y8_deaths),             
+	xy=(3, 5),	xytext=(4.2, 2600),fontsize=13,fontweight=700) 
+ax.annotate(str('на 2 мая >>'),             
+	xy=(3, 5),	xytext=(6.0, 3130),fontsize=11,fontweight=300)
+fig.set(figwidth=7,figheight=4.6)
+plt.show()
+
+# <b>Источник:</b> доклады Управления Верховного комиссара ООН<br/>
+# по правам человека (УВКПЧ) по результатам работы Мони<br/>
+# торинговой миссии ООН по правам человека в Украине<br/>
+# 2014-2021:   <b>https://bit.ly/3qOpZO8</b> (стр. 16)<br/>
+#      2022 (по 2 мая):   <b>https://bit.ly/3vHBUQB</b>
